@@ -1,0 +1,30 @@
+
+services:
+  api:
+    build: ./api-service
+    ports:
+      - "4000:4000"
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+      - redis
+
+  worker:
+    build: ./worker-service
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+      - redis
+
+  mongo:
+    image: mongo:6
+    volumes:
+      - mongo_data:/data/db
+
+  redis:
+    image: redis:7
+
+volumes:
+  mongo_data:
